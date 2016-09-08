@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/xhtml1-strict.dtd">
+<html itemscope="" itemtype="http://schema.org/Article" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+  
+<title>Simple Serial for Microsoft Visual C# Express</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="keywords" content=" serial communication code program Microsoft Visual C# Express">
+<meta name="description" content="Simple Serial Communication Code for Microsoft Visual C# Express">
+<meta name="google-site-verification" content="MxIdbWvPXwih0tMRts6LcNsHdZKd6wGcnwqCx49oHs8">
+<meta itemprop="name" content="Simple Serial Communication with Microsoft Visual C# Express">
+<meta itemprop="description" content="Here's a simple Windows serial communication program you can write yourself in 10 minutes using the free Visual C# Express development environment.">
+<meta itemprop="image" content="http://csharp.simpleserial.com/CsImage.png">
+
+<link rel="canonical" href="http://csharp.simpleserial.com/">
+
+  <!-- mailto:uce@ftc.gov -->
+  
+<script async="" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/cbgapi.loaded_1"></script><script async="" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/cbgapi.loaded_0"></script><script gapi_processed="true" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/plusone.js" async="" type="text/javascript"></script><script src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2195614-6']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    
+<style type="text/css">
+
+  body
+  {
+  font-family: Arial;
+  font-size: 12px;
+  color: #000;
+  width: 575px;
+  }
+  
+  .comment {
+     color: Green;
+     font-style: italic;
+  }
+  
+  
+  .key {
+     color: Blue;
+  }
+    
+  pre {
+    border: solid #ccc 1px;
+    background-color: #f0f0f0;
+    margin-bottom: 30px;
+  }
+    
+  img {
+   float: right;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  
+  li {
+    margin-bottom: 5px;
+  }
+  
+  h1, h2, h3 {
+    margin-top: 30px;
+           
+</style></head>
+ 
+
+
+  
+<body data-twttr-rendered="true">
+
+<h1>
+Simple Serial Communication with Microsoft Visual C# Express</h1>
+
+<iframe style="width: 58px; height: 20px;" data-twttr-rendered="true" title="Twitter Tweet Button" class="twitter-share-button twitter-tweet-button twitter-count-none" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/tweet_button.htm" allowtransparency="true" id="twitter-widget-0" frameborder="0" scrolling="no"></iframe><script type="text/javascript" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/widgets.js"></script>
+
+<!-- Begin: Keep these together -->
+<div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: none repeat scroll 0% 0% transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 450px; height: 20px;"><iframe title="+1" data-gapiattached="true" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/fastbutton.htm" name="I0_1384621985144" id="I0_1384621985144" vspace="0" tabindex="0" style="position: static; top: 0px; width: 450px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" marginwidth="0" marginheight="0" hspace="0" frameborder="0" scrolling="no" width="100%"></iframe></div>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<!-- End: Keep these together -->
+
+<h2>
+Introduction</h2>
+
+<p>
+Here's a simple Windows serial communication program you can write 
+yourself in 10 minutes. Microsoft's FREE Visual C# Express with the .Net
+ Framework now includes a serial port class that eliminates the 
+cumbersome setup for threads and overlapped I/O. They've made serial 
+communication easy again. This project can readily be adapted to a 
+variety of applications requiring serial communication.
+</p>
+
+<p>
+The example has 2 buttons (Start and Stop) and a TextBox. When the 
+application is running, click Start to open a COM port. Once the port is
+ open, incoming serial data will appear in the TextBox.
+Characters typed into the TextBox will be transmitted out the serial 
+port. Click Stop to close the COM port. That's it.
+The example code is explained below. You can either follow along
+and write your own version or simply download the Visual C# Express <a href="http://csharp.simpleserial.com/SimpleSerialCS.zip">
+Simple Serial project</a> directly. A complete <a href="#listing"> code listing</a> appears at the end of this page.
+</p>
+
+<h2>
+Create the Application</h2>
+
+<p><img src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/CsImage.png">
+
+Open Visual C# Express and select File-&gt;New Project. Chose the "Windows Application" icon
+and name the new project "Simple Serial" (the Project Name edit box is at the bottom of dialog).
+This will create a blank Form1 and skeleton code for the application.
+</p>
+
+<p>
+From the Toolbox palette, add two Buttons to Form1. Select button1. In the Properties
+palette change the <b>button1</b> Name to <b>buttonStart</b>. Change its its Text
+property to <b>Start</b>. Name the other button <b>buttonStop</b>.
+Change its Text property to <b>Stop</b> and set its Enable property to <b>False</b>.
+
+</p>
+
+<p> Add a TextBox to Form1. Change its Multiline property to <b>True</b>, ReadOnly property to <b>True</b>,
+and Scrollbars property to <b>Vertical</b>. Resize the Textbox and arrange the Buttons to look like the
+image here.
+</p>
+
+<p> Last, add a SerialPort class from the Toolbox palette to Form1. Since it's a non-visual class,
+its icon does not stay on Form1 but appears at the bottom of the Form1 design page.
+</p>
+
+<p>
+
+Select the Start button in Form1. In the Properties palette, select the Events icon. Find the event labled "Click"
+and double-click it. This will create skeleton code for the Start button "Click" event-handler. 
+Leave it empty for now. We'll add our code to it shortly.
+Go back to the design tab, select the Stop button and add a "Click" event-handler for it just like you did for the Start button.
+Using the same technique, add a "KeyPress" event-handler to the TextBox, a "DataReceived" event-handler to the SerialPort, and a
+"FormClosing" event-handler to Form1 (be sure to select FormClosing... not FormClosed).
+</p>
+
+<p>
+Now, cut and paste code from the event handlers in the <a href="#listing">
+listing </a> below into the empty event
+handlers in your project. Cut and paste the variable declaration for <b>RxString</b>.
+Be sure to place it immediately before the Form1( ) function as shown in the
+listing. Last, cut and paste the entire DisplayText( )
+function. That's it. You're done.
+</p>
+
+<h2>Test the Application</h2>
+<p>
+In the Visual C# Express IDE, press F5 (Run) or the green-arrow Run button. With the Simple Serial
+application running, press the Start button to open the COM port. Incoming serial text data will appear in
+the textBox1. Anything you type in textBox1 will be transmitted. If you don't have a connected
+serial device suitable for testing the program, use a loopback connector.
+Make one by simply jumpering pins 2 and 3 of a serial cable or DB9F connector.
+With a loopback connector, anything you type in textBox1 will be echoed back through
+the port and displayed in textBox1. Press the Stop button to close the port.
+
+</p>
+
+<p>
+If the program doesn't work, carefully review your code and serial 
+connections. In the code for buttonStart_Click( ), be sure the COM port 
+you specify is the one you're connected to. It must physically exist on 
+your computer. COM1 is most common but you might be connected to COM2, 
+COM3, etc. If the port is
+connected to an external serial device, the comm parameters (baud rate, 
+etc.) of the device and your program
+must agree. Also note that there is no serial handshaking in our 
+application. An external device
+might require it. Change parameters if needed.
+</p>
+
+<h2>How it Works</h2>
+<p>
+All the heavy lifting is performed behind the scenes thanks to the SerialPort
+component. The rest is pretty simple. The only tricky part is the
+Invoke method that allows our DisplayText( ) function to update textBox1. Let's look
+at the code for each event handler.
+</p>
+
+<p>
+In buttonStart_Click( ), we begin by setting the port name and baud rate. In our example
+PortName is COM1 but you can set it to any other port available on your computer. Notice
+the PortName is a string and must be in quotes. The baud rate must agree with the baud rate
+of whatever is on the other end of the serial connection. We then call the Open( ) function.
+If the port opened OK, we disable the Start button, enable the Stop button, and allow writing
+in textBox1.
+</p>
+
+<pre>
+ 
+  <span class="key">private void</span> buttonStart_Click(<span class="key">object</span><span class="space"> </span><span class="identifier">sender, EventArgs e)
+  {
+      serialPort1.PortName = "COM1";
+      serialPort1.BaudRate = 9600;
+  
+      serialPort1.Open();
+      <span class="key">if</span> (serialPort1.IsOpen)
+      {
+          buttonStart.Enabled = <span class="key">false</span>;
+          buttonStop.Enabled = <span class="key">true</span>;
+          textBox1.ReadOnly = <span class="key">false</span>;
+      }
+  }
+  
+
+</span></pre>
+
+
+<p>
+Once the serialPort1 is open, any incoming serial characters will cause a DataReceived event
+to fire. Inside the event handler we read all existing
+characters from the internal serial receive buffer into string RxString. <i>The next
+part is critical and not obvious.</i> serialPort1 runs in it own separate
+thread behind the scenes. This thread cannot directly call any functions in the
+main thread of our application. However, a special function, Invoke( ), will allow it. So we use Invoke
+to call our DisplayText( ) function. RxString is the global string variable accessable by both threads.
+</p>
+
+<pre>
+   <span class="key">private void</span> serialPort1_DataReceived
+     (<span class="key">object</span> sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+   {
+       RxString = serialPort1.ReadExisting();
+       <span class="key">this</span>.Invoke(<span class="key">new</span> EventHandler(DisplayText));
+   }
+          
+
+</pre>
+
+<p>
+Our DisplayText( ) function is simple. We just append the text in RxString to whatever is already
+in textBox1.
+</p>
+
+<pre>
+  <span class="key">private void</span> DisplayText(<span class="key">object</span> sender, EventArgs e)
+  {
+      textBox1.AppendText(RxString);
+  }
+
+</pre>
+ 
+
+<p> The textbox1 KeyPress( ) function captures characters typed into textBox1 and writes them to
+serialPort1. Write( ) can only send characters from a char type array so we declare one with
+a length of [1] and assign the KeyChar value to it. With the arguments in Write( ), we tell it to
+send the characters in the buff, offset of 0 chars into the array, and a length of 1 char. We
+set the event to "Handled" to prevent the typed character from appearing in textBox1. If you want it
+to appear (local echo), omit the line.
+</p>
+
+<pre>  
+  <span class="key">private</span> void textBox1_KeyPress(<span class="key">object</span> sender, KeyPressEventArgs e)
+  {
+      <span class="comment">// If the port is closed, don't try to send a character.</span>
+      <span class="key">if</span>(!serialPort1.IsOpen) <span class="key">return</span>;
+
+      <span class="comment">// If the port is Open, declare a char[] array with one element.</span>
+
+      <span class="key">char</span>[] buff = <span class="key">new</span> char[1];
+              
+      <span class="comment">// Load element 0 with the key character.</span>
+      buff[0] = e.KeyChar;
+ 
+      <span class="comment">// Send the one character buffer.</span>
+      serialPort1.Write(buff, 0, 1);
+  
+      <span class="comment">// Set the KeyPress event as handled so the character won't
+      // display locally. If you want it to display, omit the next line.</span>
+
+      e.Handled = <span class="key">true</span>;
+  }
+
+</pre>
+
+<p>
+Clicking the Stop button calls buttonStop_Click( ). If serialPort1 is open, we
+close the port and set the button enables and textBox1 ReadOnly state back to their previous value.
+</p>
+
+<pre>  
+  <span class="key">private void</span> buttonStop_Click(<span class="key">object</span> sender, EventArgs e)
+  {
+       <span class="key">if</span> (serialPort1.IsOpen)
+       {
+           serialPort1.Close();
+           buttonStart.Enabled = <span class="key">true</span>;
+           buttonStop.Enabled = <span class="key">false</span>;
+           textBox1.ReadOnly = <span class="key">true</span>;
+       }
+  }
+
+
+</pre>
+
+
+<p>
+Last but not least, if the application is closed while serialPort1 is open, the port must be closed first or the
+program will hang.
+</p>
+
+<pre>  
+  <span class="key">private</span> void Form1_FormClosing(<span class="key">object</span> sender, FormClosingEventArgs e)
+  {
+      <span class="key">if</span> (serialPort1.IsOpen) serialPort1.Close();
+  }
+  
+
+</pre>
+
+
+<h2>Final Thoughts</h2>
+<p>
+For the sake of clarity and simplicity, our example application omits a few things.
+</p><ul>
+  <li>textBox1 cannot properly display a CR without a LF. TextBoxes have the quirky need
+      for a CR-LF pair and they must be in that order. If a CR arrives by itself,
+      you'll need to add the LF.</li>
+  
+  <li>textBox1 holds a lot of characters but will eventually run out of memory and
+      just stop displaying anything new that arrives. You can limit the number of
+      characters it will display by setting the textBox1 MaxLength property but then
+      it will just run out of space sooner. A better approach is to limit the number
+      of lines without affecting the display.</li>
+
+  <li>Our program has no handshaking. Some devices require it.</li>
+
+      
+</ul>
+
+<p></p>
+
+<p>
+You are free to use all the information presented here. There are no restrictions. There's no
+support available but the program is simple enough that you probably won't need it. Send comments
+to
+<script language="javascript">
+<!--
+ML="<mia\"hln/otsp @=>:efcr.";
+MI="03=5EBC?41326:9AD;53E<D911B7:;>;21<6B;BE236FD914@D;53E<D911B7:;>;21<6B;BE236FD91083@";
+OT="";
+for(j=0;j<MI.length;j++){
+OT+=ML.charAt(MI.charCodeAt(j)-48);
+}document.write(OT);
+// --></script><a href="mailto:csharpcomments@simpleserial.com">csharpcomments@simpleserial.com</a>
+<noscript>You need JavaScript to see my email address</noscript>
+
+</p>
+
+<h2>Links</h2>
+<a href="http://csharp.simpleserial.com/SimpleSerialCS.zip">SimpleSerialCS.zip</a> Download Simple Serial Project for Visual C# Express<br> 
+
+<a href="http://msdn.microsoft.com/en-us/library/bb202722.aspx">
+  Microsoft MSDN Serial Communication Resources</a> WIN32 API serial communication reference.<br>
+<a href="http://www.microsoft.com/express/vcsharp/">www.microsoft.com/express/vcsharp/</a> Microsoft's FREE Visual C# Express
+  
+<p>
+Donations via PayPal are optional. Thank you.
+</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input name="cmd" value="_s-xclick" type="hidden">
+<input name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+" type="hidden">
+<input src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!" border="0" type="image">
+<img alt="" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/pixel.gif" height="1" border="0" width="1">
+</form>
+
+<h2><a name="listing">Full Code Listing</a></h2>
+
+<pre><code>
+  <span class="key">using</span> System;
+  <span class="key">using</span> System.Collections.Generic;
+  <span class="key">using</span> System.ComponentModel;
+  <span class="key">using</span> System.Data;
+  <span class="key">using</span> System.Drawing;
+  <span class="key">using</span> System.Text;
+  <span class="key">using</span> System.Windows.Forms;
+  
+  <span class="key">namespace</span> SimpleSerial
+  {
+      <span class="key">public partial class</span> Form1 : Form
+      {
+          <span class="comment">// Add this variable</span>
+
+          <span class="key">string</span> RxString;
+          
+          <span class="key">public</span><span class="space"> </span><span class="identifier">Form1()
+          {
+              InitializeComponent();
+          }
+  
+          <span class="key">private void</span> buttonStart_Click(</span><span class="key">object</span><span class="space"> </span><span class="identifier">sender, EventArgs e)
+          {
+              serialPort1.PortName = "COM1";
+              serialPort1.BaudRate = 9600;
+  
+              serialPort1.Open();
+              <span class="key">if</span> (serialPort1.IsOpen)
+              {
+                  buttonStart.Enabled = <span class="key">false</span>;
+                  buttonStop.Enabled = <span class="key">true</span>;
+                  textBox1.ReadOnly = <span class="key">false</span>;
+              }
+          }
+  
+          <span class="key">private void</span> buttonStop_Click(</span><span class="key">object</span> sender, EventArgs e)
+          {
+              <span class="key">if</span> (serialPort1.IsOpen)
+              {
+                  serialPort1.Close();
+                  buttonStart.Enabled = <span class="key">true</span>;
+                  buttonStop.Enabled = <span class="key">false</span>;
+                  textBox1.ReadOnly = <span class="key">true</span>;
+              }
+  
+          }
+  
+          <span class="key">private</span> void Form1_FormClosing(<span class="key">object</span> sender, FormClosingEventArgs e)
+          {
+              <span class="key">if</span> (serialPort1.IsOpen) serialPort1.Close();
+          }
+  
+          <span class="key">private</span> void textBox1_KeyPress(<span class="key">object</span> sender, KeyPressEventArgs e)
+          {
+              <span class="comment">// If the port is closed, don't try to send a character.</span>
+
+              <span class="key">if</span>(!serialPort1.IsOpen) <span class="key">return</span>;
+  
+              <span class="comment">// If the port is Open, declare a char[] array with one element.</span>
+              <span class="key">char</span>[] buff = <span class="key">new</span> char[1];
+              
+              <span class="comment">// Load element 0 with the key character.</span>
+
+              buff[0] = e.KeyChar;
+  
+              <span class="comment">// Send the one character buffer.</span>
+              serialPort1.Write(buff, 0, 1);
+  
+              <span class="comment">// Set the KeyPress event as handled so the character won't
+              // display locally. If you want it to display, omit the next line.</span>
+              e.Handled = <span class="key">true</span>;
+          }
+  
+          <span class="key">private void</span> DisplayText(<span class="key">object</span> sender, EventArgs e)
+          {
+              textBox1.AppendText(RxString);
+          }
+  
+          <span class="key">private void</span> serialPort1_DataReceived
+            (<span class="key">object</span> sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+          {
+              RxString = serialPort1.ReadExisting();
+              <span class="key">this</span>.Invoke(<span class="key">new</span> EventHandler(DisplayText));
+          }
+      }
+  }
+  
+
+</code>
+</pre>
+  
+
+
+<iframe style="width: 1px; height: 1px; position: absolute; top: -100px;" src="Simple%20Serial%20for%20Microsoft%20Visual%20C%23%20Express_files/postmessageRelay.htm" id="oauth2relay916726493" name="oauth2relay916726493"></iframe></body></html>

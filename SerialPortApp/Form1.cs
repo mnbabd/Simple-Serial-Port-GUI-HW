@@ -53,7 +53,7 @@ namespace SerialPortApp
             if (mySerPort.IsOpen == false)
             {
                 mySerPort.PortName = "COM" + textBox3.Text;
-
+                 
                 try
                 {
                     mySerPort.Open();
